@@ -100,6 +100,9 @@ export const UploadCard = observer(() => {
               .join("/"),
           )}
         </div>
+        <div className={style.pasteHint}>
+          💡 提示：您也可以复制图片后按 Ctrl+V (Cmd+V) 粘贴，或直接拖拽图片到此处
+        </div>
       </Flex>
       <ImageInput ref={fileRef} />
       <div

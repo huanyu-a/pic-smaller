@@ -6,13 +6,15 @@ import { GithubOutlined, MenuOutlined } from "@ant-design/icons";
 import { gstate } from "@/global";
 import { changeLang, langList } from "@/locale";
 import { homeState } from "@/states/home";
-import { wait } from "@/functions";
+import { wait, getFilesFromClipboard, hasImageInClipboard } from "@/functions";
 import { UploadCard } from "@/components/UploadCard";
 import { useWorkerHandler } from "@/engines/transform";
+import { createImageList } from "@/engines/transform";
 import { Compare } from "@/components/Compare";
 import { useResponse } from "@/media";
 import { RightOption } from "./RightOption";
 import { LeftContent } from "./LeftContent";
+import { useEffect } from "react";
 
 function getCurentLangStr(): string | undefined {
   const findLang = langList.find((item) => item?.key == gstate.lang);
@@ -83,6 +85,25 @@ const Body = observer(() => {
 
 const Home = observer(() => {
   useWorkerHandler();
+
+  // 全局粘贴事件处理
+  useEffect(() => {
+    const handlePaste = async (event: ClipboardEvent) => {
+      if (hasImageInClipboard(event)) {
+        event.preventDefault();
+        const files = await getFilesFromClipboard(event);
+        if (files.length > 0) {
+          createImageList(files);
+        }
+      }
+    };
+
+    document.addEventListener("paste", handlePaste);
+
+    return () => {
+      document.removeEventListener("paste", handlePaste);
+    };
+  }, []);
 
   return (
     <div className={style.container}>
