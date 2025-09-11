@@ -101,7 +101,7 @@ export const UploadCard = observer(() => {
           )}
         </div>
         <div className={style.pasteHint}>
-          💡 提示：您也可以复制图片后按 Ctrl+V (Cmd+V) 粘贴，或直接拖拽图片到此处
+          {gstate.locale?.uploadCard.pasteHint}
         </div>
       </Flex>
       <ImageInput ref={fileRef} />
